@@ -1,0 +1,87 @@
+---
+title: "cluster profiler"
+author: "january"
+date: "02/10/2021"
+output: html_document
+---
+
+SETUP
+```{r setup, include=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("clusterProfiler")
+BiocManager::install("org.Hs.eg.db")
+BiocManager::install("org.Mm.eg.db")
+BiocManager::install("topGO")
+BiocManager::install("Rgraphviz")
+
+library("clusterProfiler")
+library(org.Hs.eg.db)
+library(org.Mm.eg.db)
+library(ggnewscale)
+library(topGO)
+library(Rgraphviz)
+```
+
+GO FOR HUMAN DE HI VS LO
+``` {r}
+setwd('/Users/januaryyiyue/Desktop/SchoolWorkLife/year3.5/camh/patch_seq_microglia')
+h_de <- read.xlsx('h_de_FDR.xlsx', sheetName = 'h_de_FDR')
+gene.list <- dplyr::filter(h_de, avg_log2FC >= 2) # get positive values for hi vs lo
+
+ego <- enrichGO(gene          = gene.list$gene,
+                OrgDb         = org.Hs.eg.db,
+                keyType       = 'SYMBOL',
+                ont           = "BP",
+                pAdjustMethod = "BH",
+                pvalueCutoff  = 0.01,
+                qvalueCutoff  = 0.05)
+
+ego_sum <- summary(ego)
+
+```
+
+DOTPLOT, ENRICHMAP AND CNETPLOT FOR HUMAN DE HI VS LO
+``` {r}
+dotplot(ego, showCategory = 30)
+
+cnetplot(ego, showCategory=5,
+         categorySize="p.adjust",
+         foldChange=gene.list$avg_log2FC,
+         order=TRUE)
+
+plotGOgraph(ego)
+```
+
+GO FOR MOUSE DE HI VS LO
+``` {r}
+setwd('/Users/januaryyiyue/Desktop/SchoolWorkLife/year3.5/camh/patch_seq_microglia')
+m_de <- read.xlsx('m_de_FDR.xlsx', sheetName = 'm_de_FDR')
+gene.list.m <- dplyr::filter(m_de, avg_log2FC >= 2) # get positive values for hi vs lo
+
+egom <- enrichGO(gene          = gene.list.m$gene,
+                OrgDb         = org.Mm.eg.db,
+                keyType       = 'SYMBOL',
+                ont           = "BP",
+                pAdjustMethod = "BH",
+                pvalueCutoff  = 0.01,
+                qvalueCutoff  = 0.05)
+
+egom_sum <- summary(egom)
+
+```
+
+DOTPLOT, ENRICHMAP AND CNETPLOT FOR MOUSE DE HI VS LO
+``` {r}
+dotplot(egom, showCategory = 30)
+
+cnetplot(egom, showCategory=5,
+         categorySize="p.adjust",
+         foldChange=gene.list.m$avg_log2FC,
+         order=TRUE)
+
+plotGOgraph(egom)
+```
+
+

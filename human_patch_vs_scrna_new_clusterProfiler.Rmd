@@ -1,0 +1,56 @@
+---
+title: "cluster profiler"
+author: "january"
+date: "02/10/2021"
+output: html_document
+---
+
+SETUP
+```{r setup, include=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("clusterProfiler")
+BiocManager::install("org.Hs.eg.db")
+BiocManager::install("topGO")
+BiocManager::install("Rgraphviz")
+
+library("clusterProfiler")
+library(org.Hs.eg.db)
+library(org.Mm.eg.db)
+library(ggnewscale)
+library(topGO)
+library(Rgraphviz)
+```
+
+GO FOR HUMAN DE HI VS LO
+``` {r}
+setwd('/Users/januaryyiyue/Desktop/SchoolWorkLife/year3.5/camh/SCC_patch_vs_scRNA_new')
+h_de <- read.xlsx('patch_vs_scrna_de_new_FDR.xlsx', sheetName = 'patch_vs_scrna_de_new_FDR')
+gene.list <- dplyr::filter(h_de, avg_log2FC >= 2) # get positive values for hi vs lo
+
+ego <- enrichGO(gene          = gene.list$gene,
+                OrgDb         = org.Hs.eg.db,
+                keyType       = 'SYMBOL',
+                ont           = "BP",
+                pAdjustMethod = "BH",
+                pvalueCutoff  = 0.01,
+                qvalueCutoff  = 0.05)
+
+ego_sum <- summary(ego)
+
+```
+
+DOTPLOT, ENRICHMAP AND CNETPLOT FOR HUMAN DE HI VS LO
+``` {r}
+dotplot(ego, showCategory = 30)
+
+cnetplot(ego, showCategory=5,
+         categorySize="p.adjust",
+         foldChange=gene.list$avg_log2FC,
+         order=TRUE)
+
+plotGOgraph(ego)
+```
+
+
