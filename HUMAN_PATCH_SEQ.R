@@ -100,7 +100,7 @@ write.xlsx(cluster3.markers, file = "h_cluster3_markers.xlsx",
            sheetName = "h_cluster3_markers", append = FALSE)
 
 # visualization
-human_violin <- VlnPlot(human_seurat, features = c("C1QC", "AIF1","CD74", "TSPO"), ncol = 2)
+human_violin <- VlnPlot(human_seurat, features = c("CD74", "TSPO", "C1QC", "AIF1"), ncol = 2)
 FeaturePlot(human_seurat, features = c("C1QC", "C1QA", "AIF1","CD74", "SPI1", "TSPO"))
 
 h_seurat_plot + human_violin

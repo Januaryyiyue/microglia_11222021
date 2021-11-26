@@ -292,7 +292,7 @@ micro <- dplyr::rename(micro, transcriptomics_sample_id = sample_id)
 data <- inner_join(micro, meta, by = "transcriptomics_sample_id")
 
 # remove subtypes with very few cells
-data <- data %>% filter(subclass != 'L2/3') %>% filter(subclass != 'Meis2')
+data <- data %>% filter(subclass != 'L2/3') %>% filter(subclass != 'Meis2') %>% filter(subclass != '')
 data$subclass <- as.factor(data$subclass)
 
 ## REGRESSION ----
@@ -307,7 +307,7 @@ p1 <- ggplot(
 microglianess <- data$Macrophage
 subclass <- data$subclass
 m1 <- lm(microglianess ~ subclass)
-summary(m1) # Multiple R-squared:  0.009114,	Adjusted R-squared:  0.007771 
+summary(m1) # Multiple R-squared:  0.008014,	Adjusted R-squared:  0.00685 
 
 # cell soma normalized depth
 p2 <- ggplot(
@@ -321,7 +321,7 @@ p2 <- ggplot(
 
 cell_soma_norm_depth <- data$cell_soma_normalized_depth
 m2 <- lm(microglianess ~ cell_soma_norm_depth)
-summary(m2) # Multiple R-squared:  0.0005893,	Adjusted R-squared:  -0.001105
+summary(m2) # Multiple R-squared:  0.0002817,	Adjusted R-squared:  -0.001615
 
 p1 + p2 + plot_layout(ncol = 2, widths=c(4, 3))
 

@@ -61,7 +61,7 @@ mouse_seurat <- FindClusters(mouse_seurat, resolution = 0.5)
 reticulate::py_install(packages = 'umap-learn')
 mouse_seurat <- RunUMAP(mouse_seurat, dims = 1:20)
 
-h_seurat_plot = DimPlot(mouse_seurat, reduction = "umap", label = FALSE)
+m_seurat_plot = DimPlot(mouse_seurat, reduction = "umap", label = FALSE)
 
 # to save
 saveRDS(mouse_seurat, file = "/Users/januaryyiyue/Desktop/SchoolWorkLife/year3.5/camh/patch_seq_microglia/m_seurat.rds")
@@ -156,10 +156,11 @@ write.xlsx(cluster14.markers.genes, file = "m_cluster14_markers.xlsx",
            sheetName = "m_cluster14_markers", append = FALSE)
 
 # visualization
-mouse_violin <- VlnPlot(mouse_seurat, features = c("C1qc", "Aif1","Cd74", "Tspo"), ncol = 2)
+mouse_violin <- VlnPlot(mouse_seurat, features = c("Cd74", "Tspo", "C1qc", "Aif1"), ncol = 2)
+mouse_violin2 <- VlnPlot(mouse_seurat, features = c("C1qc", "Aif1","Cd74", "Tmem119", "Tspo"), ncol = 2)
 FeaturePlot(mouse_seurat, features = c("C1qc", "C1qa", "Aif1","Cd74", "Spi1", "Tspo"))
 
-mouse_seurat_plot + mouse_violin
+m_seurat_plot + mouse_violin
 
 # can plot raw counts as well
 VlnPlot(mouse_seurat, features = c("C1qc", "C1qa"), slot = "counts", log = TRUE)
