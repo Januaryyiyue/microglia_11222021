@@ -84,11 +84,11 @@ write.csv(mouse_t, file = "./output/m_QC_micro_top20_count.csv")
 write.csv(mouse_b, file = "./output/m_QC_micro_bottom20_count.csv")
 
 
-## JOIN METADATA + TTYPE WITH TOP20 AND BOTTOM20 ----
+## JOIN METADATA WITH TOP20 AND BOTTOM20 ----
 mouse_top <- select(micro_top20, transcriptomics_sample_id)
 mouse_bottom <- select(micro_bottom20, transcriptomics_sample_id)
 
-# open metadata and add ttype
+# open metadata
 meta <- read.csv("/Users/januaryyiyue/Desktop/SchoolWorkLife/year3.5/camh/project/mouse_patch_seq/data/20200625_patchseq_metadata_mouse.csv")
 
 meta$transcriptomics_sample_id = sub("-",".", meta$transcriptomics_sample_id)

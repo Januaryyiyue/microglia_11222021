@@ -925,8 +925,7 @@ tojoin2 <- tojoin2[-4]
 
 
 ## JOIN WITH RESHAPED CPM WITH TRANSCRIPTOMICS SAMPLE ID AND IBA1 MRNA EXPRESSION ----
-setwd('/Users/januaryyiyue/Desktop/SchoolWorkLife/year3.5/camh/project/berg_patchseq-main/data')
-cpm <- read.csv('20200512_Human_PatchSeq_Release_cpm.csv')
+cpm <- read.csv('/Users/januaryyiyue/Desktop/SchoolWorkLife/year3.5/camh/project/berg_patchseq-main/data20200512_Human_PatchSeq_Release_cpm.csv')
 cpm <- cpm %>% as.data.frame()
 cpm = cpm %>% distinct(X, .keep_all = T)
 X = cpm$X
